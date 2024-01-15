@@ -100,7 +100,7 @@ const productCtrl = {
     },
     createProduct: async (req, res) => {
         try {
-            const { title,price,amount, description, images, category,feature,band } = req.body;
+            const { title,price,amount, description, images, category,feature,band, sizes } = req.body;
             // var listType = [];
             // for (var i = 0; i < types.length; i++) {
             //     const typeItem = new Type({
@@ -127,6 +127,7 @@ const productCtrl = {
                 amount:amount,
                 feature: feature,
                 band:band,
+                sizes: sizes,
             });
             await newProduct.save();
             res.json({ msg: "Product create!", newProduct });

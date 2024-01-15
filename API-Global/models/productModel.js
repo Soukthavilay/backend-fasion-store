@@ -94,6 +94,7 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    sizes: [{ type: String }],
     sold: {
       type: Number,
       default: 0,

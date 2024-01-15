@@ -18,8 +18,8 @@ const paypalCtrl = {
                 payment_method: "paypal",
               },
               redirect_urls: {
-                return_url: "https://pbl-technology-988327da4050.herokuapp.com/api/paypal/success",
-                cancel_url: "https://pbl-technology-988327da4050.herokuapp.com/api/paypal/cancel",
+                return_url: "http://localhost:3000/api/paypal/success",
+                cancel_url: "http://localhost:3000/api/paypal/cancel",
               },
               transactions: [
                 {
@@ -48,8 +48,8 @@ const paypalCtrl = {
                 payment_method: "paypal",
               },
               redirect_urls: {
-                return_url: "https://pbl-technology-988327da4050.herokuapp.com/api/paypal/success",
-                cancel_url: "https://pbl-technology-988327da4050.herokuapp.com/api/paypal/cancel",
+                return_url: "http://localhost:3000/api/paypal/success",
+                cancel_url: "http://localhost:3000/api/paypal/cancel",
               },
               transactions: [
                 {
