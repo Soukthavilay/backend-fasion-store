@@ -100,39 +100,24 @@ const productCtrl = {
     },
     createProduct: async (req, res) => {
         try {
-            const { title,price,amount, description, images, category,feature,band, sizes } = req.body;
-            // var listType = [];
-            // for (var i = 0; i < types.length; i++) {
-            //     const typeItem = new Type({
-            //         name: types[i].name,
-            //         price: types[i].price,
-            //         amount: types[i].amount,
-            //     });
-            //     listType.push(typeItem);
-            // }
-            // const price = types[0].price;
+            const { title, price, description, images, category, band, colors } = req.body;
             if (!images)
                 return res.status(400).json({ msg: "No pictures to upload" });
             const product = await Products.findOne({ title: title });
-            console.log(title);
             if (product)
                 return res.status(400).json({ msg: "This product already exists." });
             const newProduct = new Products({
-                // types: listType,
                 title: title,
                 description: description,
                 images: images,
                 category: category,
                 price: price,
-                amount:amount,
-                feature: feature,
                 band:band,
-                sizes: sizes,
+                colors: colors,
             });
             await newProduct.save();
             res.json({ msg: "Product create!", newProduct });
         } catch (err) {
-            console.log(err);
             return res.status(500).json({ msg: "Internal Server" });
         }
     },
