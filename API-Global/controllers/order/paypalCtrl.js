@@ -9,47 +9,17 @@ const paypalCtrl = {
         try {
           const {order_id} = req.body;
           const Order = await Orders.findById(order_id);
-          const voucher = await voucherModel.find({code: Order.voucherCode})
+          // const voucher = await voucherModel.find({code: Order.voucherCode})
           let payment;
-          if(Order.voucherCode){
+          if(Order){
             payment = {
               intent: "sale",
               payer: {
                 payment_method: "paypal",
               },
               redirect_urls: {
-                return_url: "http://localhost:3000/api/paypal/success",
-                cancel_url: "http://localhost:3000/api/paypal/cancel",
-              },
-              transactions: [
-                {
-                  order_id:order_id,
-                  item_list: {
-                    items: Order.listOrderItems.map((item) => ({
-                      name: order_id,
-                      sku: "001",
-                      price: item.price - item.price * voucher[0].discountPercentage / 100,
-                      currency: "USD",
-                      quantity: item.quantity,
-                    })),
-                  },
-                  amount: {
-                    currency: "USD",
-                    total: Order.total,
-                  },
-                  description: "This is the payment description.",
-                },
-              ],
-            };
-          } else {
-            payment = {
-              intent: "sale",
-              payer: {
-                payment_method: "paypal",
-              },
-              redirect_urls: {
-                return_url: "http://localhost:3000/api/paypal/success",
-                cancel_url: "http://localhost:3000/api/paypal/cancel",
+                return_url: "http://localhost:5000/api/paypal/success",
+                cancel_url: "http://localhost:5000/api/paypal/cancel",
               },
               transactions: [
                 {
@@ -109,9 +79,7 @@ const paypalCtrl = {
                     const Order = await Orders.findById(order_id);
     
                     // Render the HTML template
-                    const renderedHtml = await ejs.renderFile('E:\\Bot\\PBLFinal\\API-Global\\controllers\\order\\templates\\success.ejs', { order_id: order_id ,order: Order});
-    
-                    res.send(renderedHtml);
+                    res.render('order/templates/success', { order_id: order_id, order: Order });
                 } catch (err) {
                     console.log(err);
                     res.status(401).send("Something went wrong, can't complete your order");

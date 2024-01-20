@@ -95,10 +95,10 @@ const orderCtrl = {
             const purchasedPrice = cart[i].price;
             total += purchasedPrice * cart[i].quantity;
             cart[i].price = purchasedPrice;
-            if (product.amount === 0) {
+            if (cart[i].colors.sizes.quantity === 0) {
               return res.status(400).json({ msg: 'The product is out of stock.' });
             }
-            if (product.amount < cart[i].quantity) {
+            if (cart[i].colors.sizes.quantity < cart[i].quantity) {
               return res.status(400).json({ msg: 'Not enough products. please reduce.' });
             }
             await product.save();
@@ -241,18 +241,35 @@ const orderCtrl = {
                 }
                 });
             }
-            if(order.status === 'Delivered'){
+            if (order.status === 'Delivered') {
+              try {
                 const od = order.listOrderItems;
-                for (let i = 0; i < od.length; i++){
-                    const product = await Products.findById(od[i]._id);
-                    if (!product) {
-                        return res.status(400).json({ msg: 'Product not found.' });
+                for (let i = 0; i < od.length; i++) {
+                  const product = await Products.findById(od[i]._id);
+                  const orderQuantity = od[i].quantity;
+                  if (!product) {
+                    return res.status(400).json({ msg: 'Product not found.' });
+                  }
+                  const productColor = product.colors.find(color => color._id === od[i].colors._id);
+                  if (productColor) {
+                    const productSize = productColor.sizes.find(size => size._id === od[i].colors.sizes._id);
+                    if (productSize) {
+                      productSize.quantity -= od[i].quantity;
                     }
-                    product.amount -= od[i].quantity;
-                    product.sold += od[i].quantity;
-                    await product.save();
+                  }
+                  
+                  // product.amount -= orderQuantity;
+                  product.sold += orderQuantity;
+                  await product.save();
                 }
-            }
+                // Gửi phản hồi thành công nếu không có lỗi
+                res.status(200).json({ msg: 'Products updated successfully.' });
+              } catch (error) {
+                console.error(error);
+                // Gửi phản hồi lỗi nếu có ngoại lệ xảy ra
+                res.status(500).json({ msg: 'Internal Server Error.' });
+              }
+            }            
             await order.save();
             res.json({ msg: 'Order status updated successfully.', order });
             } catch (error) {
