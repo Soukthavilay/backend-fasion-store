@@ -11,5 +11,7 @@ yarn.lock
 .env
 E:/Hang/backend/PBLFinal/API-Global/.env
 E:/Hang/backend/PBLFinal/API-Global/Procfile
+E:/Hang/backend/PBLFinal/API-Global/Dockerfile
+E:/Hang/backend/PBLFinal/API-Global/Procfile
 .package-lock.json
 docker-compose.yml
