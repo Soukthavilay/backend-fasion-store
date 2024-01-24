@@ -9,7 +9,6 @@ const paypalCtrl = {
         try {
           const {order_id} = req.body;
           const Order = await Orders.findById(order_id);
-          // const voucher = await voucherModel.find({code: Order.voucherCode})
           let payment;
           if(Order){
             payment = {

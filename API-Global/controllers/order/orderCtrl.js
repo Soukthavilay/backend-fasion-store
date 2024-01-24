@@ -15,71 +15,9 @@ const Mailgen = require('mailgen');
 const Voucher = require('../../models/voucherModel')
 
 const orderCtrl = {
-    createOrder: async (req, res) => {
-        try {
-            const { orderItems, address, phone } = req.body;
-            const user_id = await authMe(req);
-            const order = Orders({
-                user_id: user_id,
-                status: 'Pending',
-                address: address,
-                phone: phone,
-            });
-            await order.save();
-            let price = 0;
-            let listOrderItems = [];
-            for (let item = 0; item < orderItems.length; item++) {
-                const productItem = await Products.findOne({ _id: orderItems[item].product_id });
-                if (productItem) {
-                    const type = productItem.types;
-                    type.forEach((i) => {
-                        if (i._id == orderItems[item].type_id) {
-                            amount = i.amount - orderItems[item].amount;
-                            if (orderItems[item].amount < 0) {
-                                res.status(400).json({ msg: "Amount is invalid" });
-                                return;
-                            }
-                            listOrderItems.push({
-                                product_id: orderItems[item].product_id,
-                                type_id: orderItems[item].type_id,
-                                amount: orderItems[item].amount,
-                                image: productItem.images.url,
-                                product_name: productItem.title,
-                                price: i.price,
-                                type_name: i.name,
-                            })
-                            if (amount < 0) {
-                                throw new RangeError("Not enought amount");
-                            }
-                            else {
-                                price += orderItems[item].amount * i.price;
-                                i.amount = amount;
-                            }
-                        }
-                    });
-                    await Products.findByIdAndUpdate(productItem._id, { types: type });
-                }
-                else {
-                    throw new Error("Product not found");
-                }
-            }
-            order.listOrderItems = listOrderItems;
-            order.total = price;
-            await order.save();
-            res.send({ message: "Order created successfully", order: order });
-        }
-        catch (err) {
-            console.log("Error: ", err.message)
-            if (err instanceof RangeError) {
-                res.status(400).send({ message: err.message });
-            }
-            else
-                return res.status(500).json({ message: err.message });
-        }
-    },
     CreateOrderKoh: async (req, res) => {
         try {
-          const { phone, address, user_id, voucherCode } = req.body;
+          const { phone, address, user_id } = req.body;
           const user = await User.findById(user_id);
           if (!user) {
             return res.status(400).json({ msg: 'User does not exist.' });
@@ -115,20 +53,6 @@ const orderCtrl = {
             status: 'Pending',
             paymentMethod: 'COD',
           });
-      
-          let voucher = null; // Khởi tạo biến voucher
-          if (voucherCode) {
-            voucher = await Voucher.findOne({ code: voucherCode });
-            if (!voucher) {
-              return res.status(400).json({ msg: 'Invalid voucher code' });
-            }
-            order.voucherCode = voucherCode; // Gán giá trị voucherCode vào order
-          }
-      
-          if (voucher) {
-            const discount = (total * voucher.discountPercentage) / 100;
-            order.total -= discount; // Áp dụng giảm giá vào order
-          }
       
           await order.save();
           user.cart = [];

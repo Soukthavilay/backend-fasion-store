@@ -7,7 +7,6 @@ const authMe = require('../middleware/authMe')
 
 router.route('/orders')
     .get(orderCtrl.getOrdersbyID)
-    .post(orderCtrl.createOrder)
     .put(auth, orderCtrl.updateOrderDetail)
     .delete(auth, orderCtrl.removeOrderItem)
     
