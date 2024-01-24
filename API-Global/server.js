@@ -25,23 +25,8 @@ app.use(cookieParser())
 app.use(morgan('tiny'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-// app.disable('x-powered-by'); // less hackers know about our stack
-// app.use(cors());
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     const allowedOrigins = ['https://64e7-2402-800-6294-cf45-c510-287c-d959-6b5a.ngrok-free.app', 'http://localhost:3000', 'http://localhost:5000'];
-//     if (allowedOrigins.includes(origin)) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   credentials: true
-// }));
 app.use(cors({
   origin: 'http://localhost:3000',
-    //origin: "https://64e7-2402-800-6294-cf45-c510-287c-d959-6b5a.ngrok-free.app",
-    // origin: "https://splendid-puppy-f9941c.netlify.app",
     credentials: true,
 }));
 app.use(bodyParser.json());
@@ -72,19 +57,6 @@ app.use("/api", require("./routes/paypalRouter"))
 app.use("/api", require("./routes/bandRouter"))
 app.use("/api", require("./routes/voucherRouter"))
 
-
-
-// // Connect to mongodb
-// const URI = process.env.MONGODB_URL
-// mongoose.connect(URI, {
-//     useCreateIndex: true,
-//     useFindAndModify: false,
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// }, err => {
-//     if (err) throw err;
-//     console.log('Connected to MongoDB')
-// })
 // Connect to mongodb
 connectDatabase();
 
