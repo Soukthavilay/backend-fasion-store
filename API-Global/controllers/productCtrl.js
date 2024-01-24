@@ -147,14 +147,11 @@ const productCtrl = {
           const {
             title,
             price,
-            amount,
             description,
             images,
             category,
-            feature,
             band,
-            discountPercentage,
-            discountExpiration,
+            colors
           } = req.body;
       
           // Check if the product exists
@@ -163,25 +160,15 @@ const productCtrl = {
             return res.status(404).json({ message: 'Product not found' });
           }
       
-          // Calculate the reduced price
-          let updatedPrice = price;
-          if (discountPercentage) {
-            const discountAmount = (price * discountPercentage) / 100;
-            updatedPrice = price - discountAmount;
-          }
-      
           // Construct the update object
           const update = {
             title,
-            price: updatedPrice,
-            amount,
+            price,
             description,
             images,
             category,
-            feature,
             band,
-            discountPercentage,
-            discountExpiration,
+            colors
           };
       
           // Update the product
