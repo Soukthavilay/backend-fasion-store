@@ -9,5 +9,7 @@ yarn.lock
 /.env
 .env
 .env
+E:/Hang/backend/PBLFinal/API-Global/.env
+E:/Hang/backend/PBLFinal/API-Global/Procfile
 .package-lock.json
 docker-compose.yml
