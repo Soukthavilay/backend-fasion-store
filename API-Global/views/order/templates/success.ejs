@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <meta charset="UTF-8" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
 <head>
     <title>Order Confirmation</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Noto Sans Lao', sans-serif;
             text-align: center;
             background-color: #f9f9f9;
         }
@@ -46,12 +54,24 @@
             display: flex;
             justify-content: space-around;
         }
+        .name-customer{
+            text-transform: uppercase;
+        }
+        @media only screen and (max-width : 590px){
+            .item-image{
+                flex-direction: column;
+            }
+            .item-image > img {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
+    <h1>Order Confirmation</h1>
     <div class="container">
-        <h1>Order Confirmation</h1>
-        <p>Thank you for your purchase, <strong><%= order.name %>!</strong></p>
+        <h1>Billing</h1>
+        <p>Thank you for your purchase, <strong class="name-customer"><%= order.name %>!</strong></p>
         <p>Your order details:</p>
         <% for (let i = 0; i < order.listOrderItems.length; i++) { %>
             <div class="item">
